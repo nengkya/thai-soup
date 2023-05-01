@@ -1,5 +1,4 @@
 import os
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -14,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 
 import urllib.request
+import pandas as pd
 
 
 def test_eight_components():
@@ -42,14 +42,20 @@ def test_eight_components():
 	with open(hs_code + ".html", "w") as file:
 		file.write(str(soup))
 
-	##########extract data
 	#Verifying tables and their classes
 	print('Classes of each table:')
-
 	for table in soup.find_all('table'):
-
 		print(table.get('class'))
-	##########
+
+	#Creating list with all tables
+	tables = soup.find_all('table')
+
+	#Looking for the table with the classes 'wikitable' and 'sortable'
+	table = soup.find('table', class_='table-bordered')
+
+	df_pandas=pd.read_html(driver.page_source, attrs={'class':'table-bordered'},flavor='bs4')
+
+	print(df_pandas)
 
 	driver.quit()
 
