@@ -42,20 +42,14 @@ def test_eight_components():
 	with open(hs_code + ".html", "w") as file:
 		file.write(str(soup))
 
-	#Verifying tables and their classes
-	print('Classes of each table:')
-	for table in soup.find_all('table'):
-		print(table.get('class'))
-
-	#Creating list with all tables
-	tables = soup.find_all('table')
-
-	#Looking for the table with the classes 'wikitable' and 'sortable'
-	table = soup.find('table', class_='table-bordered')
+	pd.set_option('display.max_colwidth', None)	
 
 	df_pandas=pd.read_html(driver.page_source, attrs={'class':'table-bordered'},flavor='bs4')
 
-	print(df_pandas)
+	data = df_pandas[1]
+
+	#print(df_pandas)
+	print(data)
 
 	driver.quit()
 
