@@ -1,13 +1,20 @@
 import os
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+
 #for input text in html form
 from selenium.webdriver.common.keys import Keys
+
 #import Action chains for pause
 from selenium.webdriver.common.action_chains import ActionChains
+
 #click
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+#extract form submit result
+from bs4 import BeautifulSoup
 
 
 def test_eight_components():
@@ -20,7 +27,7 @@ def test_eight_components():
 
 	driver.get('https://www.customs.go.th/statistic_report.php?lang=en&')
 
-	WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[7]/td[2]/button[1]"))).click()
+	#WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[7]/td[2]/button[1]"))).click()
 
 	title = driver.title
 	assert title == "Thai Customs"
@@ -30,23 +37,24 @@ def test_eight_components():
 
 	text_box = driver.find_element(by=By.NAME, value="tariff_code")
 
-	#submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
+	hs_code = "39011012000"
 
-	text_box.send_keys("39011012000")
+	text_box.send_keys(hs_code)
 
-	action.pause(3)
+	WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH, "/html/body/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[7]/td[2]/button[1]"))).click()
+
+	#action.pause(3)
 
 	#perform the operation
 	action.perform()
 
-	#submit_button.click()
-	#action.move_to_element(submit_button).click(submit_button).perform()
+	#soup = BeautifulSoup(driver.current_url, features = "html.parser")
+	soup = BeautifulSoup(driver.page_source, features = "html.parser")
 
-	'''
-	message = driver.find_element(by=By.ID, value="message")
-	value = message.text
-	assert value == "Received!"
-	'''
+	with open(hs_code + ".html", "w") as file:
+		file.write(str(soup))
+
+	#print(soup)
 
 	driver.quit()
 
