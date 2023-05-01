@@ -6,34 +6,43 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 def test_eight_components():
-	driver = webdriver.Chrome()
+	options = webdriver.ChromeOptions()
+	options.add_argument("start-maximized");
+	options.add_argument("disable-infobars")
+	options.add_argument("--disable-extensions")
 
-	#driver.get("https://www.selenium.dev/selenium/web/web-form.html")
-	driver.get('https://www.customs.go.th/statistic_report.php?lang=en&')
+	driver = webdriver.Chrome(options=options)
+
+	driver.get("https://www.selenium.dev/selenium/web/web-form.html")
+	#driver.get('https://www.customs.go.th/statistic_report.php?lang=en&')
 
 	title = driver.title
-	assert title == "Thai Customs"
-
-	#driver.implicitly_wait(0.5)
+	#assert title == "Thai Customs"
+	assert title == "Web form"
 
 	text_box = driver.find_element(by=By.NAME, value="my-text")
+	#text_box = driver.find_element(by=By.NAME, value="tariff_code")
 
 	submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
+
+	text_box.send_keys("39011012000")
 
 	#create action chain object
 	action = ActionChains(driver)
 
-	action.pause(15)
+	action.pause(3)
 
 	#perform the operation
 	action.perform()
 
-	text_box.send_keys("Selenium")
 	submit_button.click()
 
 	message = driver.find_element(by=By.ID, value="message")
 	value = message.text
 	assert value == "Received!"
+
+	action.pause(1)
+	action.perform()
 
 	driver.quit()
 

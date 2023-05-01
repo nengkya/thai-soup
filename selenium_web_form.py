@@ -11,52 +11,42 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 def test_eight_components():
-	############click
-	options = webdriver.ChromeOptions()
+	options = webdriver.EdgeOptions()
 	options.add_argument("start-maximized");
 	options.add_argument("disable-infobars")
 	options.add_argument("--disable-extensions")
 
-	'''
-	/usr/lib/chromium-browser/chromedriver
-	To put the chromedriver binary in the path,
-	you would write
-	export PATH=$PATH:/usr/lib/chromium-browser/
-	'''
-	#driver = webdriver.Chrome(chrome_options=options, executable_path=r'C:\Utility\BrowserDrivers\chromedriver.exe')
-	driver = webdriver.Chrome(chrome_options=options)
+	driver = webdriver.Edge(options=options)
 
 	driver.get('https://www.customs.go.th/statistic_report.php?lang=en&')
-	WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//a[@track-element='header-login']"))).click()
-	###########
+
+	WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[7]/td[2]/button[1]"))).click()
 
 	title = driver.title
 	assert title == "Thai Customs"
-
-	#driver.implicitly_wait(0.5)
 
 	#create action chain object
 	action = ActionChains(driver)
 
 	text_box = driver.find_element(by=By.NAME, value="tariff_code")
 
-	submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
+	#submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
 
 	text_box.send_keys("39011012000")
-
-	driver.implicitly_wait(10)
-
-	#submit_button.click()
-	ActionChains(driver).move_to_element(submit_button).click(submit_button).perform()
-
-	message = driver.find_element(by=By.ID, value="message")
-	value = message.text
-	assert value == "Received!"
 
 	action.pause(3)
 
 	#perform the operation
 	action.perform()
+
+	#submit_button.click()
+	#action.move_to_element(submit_button).click(submit_button).perform()
+
+	'''
+	message = driver.find_element(by=By.ID, value="message")
+	value = message.text
+	assert value == "Received!"
+	'''
 
 	driver.quit()
 
