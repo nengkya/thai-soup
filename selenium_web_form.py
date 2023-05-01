@@ -8,11 +8,12 @@ from selenium.webdriver.common.action_chains import ActionChains
 def test_eight_components():
 	driver = webdriver.Chrome()
 
-	#driver.get("https://www.selenium.dev/selenium/web/web-form.html")
-	driver.get('https://www.customs.go.th/statistic_report.php?lang=en&')
+	driver.get("https://www.selenium.dev/selenium/web/web-form.html")
+	#driver.get('https://www.customs.go.th/statistic_report.php?lang=en&')
 
 	title = driver.title
-	assert title == "Thai Customs"
+	#assert title == "Thai Customs"
+	assert title == "Web Form"
 
 	#driver.implicitly_wait(0.5)
 
