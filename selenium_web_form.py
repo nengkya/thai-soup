@@ -27,8 +27,6 @@ def test_eight_components():
 
 	driver.get('https://www.customs.go.th/statistic_report.php?lang=en&')
 
-	#WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, "/html/body/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[7]/td[2]/button[1]"))).click()
-
 	title = driver.title
 	assert title == "Thai Customs"
 
@@ -41,20 +39,17 @@ def test_eight_components():
 
 	text_box.send_keys(hs_code)
 
-	WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH, "/html/body/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[7]/td[2]/button[1]"))).click()
+	WebDriverWait(driver, 1).until(EC.element_to_be_clickable((By.XPATH, "/html/body/form[1]/div[3]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[7]/td[2]/button[1]"))).click()
 
-	#action.pause(3)
+	#action.pause(1)
 
 	#perform the operation
 	action.perform()
 
-	#soup = BeautifulSoup(driver.current_url, features = "html.parser")
 	soup = BeautifulSoup(driver.page_source, features = "html.parser")
 
 	with open(hs_code + ".html", "w") as file:
 		file.write(str(soup))
-
-	#print(soup)
 
 	driver.quit()
 
