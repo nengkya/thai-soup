@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 
 import urllib.request
 import pandas as pd
+import csv
 
 
 def test_eight_components():
@@ -42,14 +43,44 @@ def test_eight_components():
 	with open(hs_code + ".html", "w") as file:
 		file.write(str(soup))
 
-	pd.set_option('display.max_colwidth', None)	
+	#pd.set_option('display.max_colwidth', 30)	
+	#pd.set_option('display.max_column', None)	
 
 	df_pandas=pd.read_html(driver.page_source, attrs={'class':'table-bordered'},flavor='bs4')
 
-	data = df_pandas[1]
+	####################
+	#field names 
+	fields = ['Name', 'Branch', 'Year', 'CGPA'] 
+		
+	#data rows of csv file 
+	rows = df_pandas[1].values.tolist()
+	
+	#name of csv file
 
-	#print(df_pandas)
-	print(data)
+	'''
+	for	mylist in soup.find_all("li", {"class": "active"}):
+		for a in soup.find_all('a', href=True):
+			print("Found the URL:", a['href'])
+	'''
+
+	filename = "university_records.csv"
+		
+	#writing to csv file 
+	with open(filename, 'w') as csvfile: 
+		#creating a csv writer object 
+		csvwriter = csv.writer(csvfile) 
+			
+		#writing the fields 
+		csvwriter.writerow(fields) 
+			
+		#writing the data rows
+		for i in range(0, 3):
+			csvwriter.writerow(rows[i])
+	##############
+
+	for i in range(0, 3):
+		print(type(rows[i]))
+		print(rows[i])
 
 	driver.quit()
 
