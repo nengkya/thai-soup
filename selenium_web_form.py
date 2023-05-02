@@ -39,15 +39,15 @@ def test_eight_components():
 
 	soup = BeautifulSoup(driver.page_source, features = "html.parser")
 
-	df_pandas=pd.read_html(driver.page_source, attrs={'class':'table-bordered'},flavor='bs4')
+	df_pandas=pd.read_html(driver.page_source, attrs={'class':'table-bordered'},flavor='html5lib')
+
+	print(list(df_pandas[2]))
 
 	####################
 	#data of csv file
 	for table in range(1, len(df_pandas)):
 		rows = df_pandas[table].values.tolist()
 
-		print(rows)
-		
 		#name of csv file
 		a_tab = SoupStrainer('li',{'class': 'active'})
 
@@ -61,6 +61,9 @@ def test_eight_components():
 		with open(filename, 'w') as csvfile: 
 			#creating a csv writer object 
 			csvwriter = csv.writer(csvfile) 
+
+			if table == 2:
+				csvwriter.writerow(list(df_pandas[table]))
 				
 			#writing the data rows
 			for i in range(0, len(rows)):

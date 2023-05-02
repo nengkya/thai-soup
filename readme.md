@@ -1,7 +1,7 @@
-https://www.selenium.dev/documentation/webdriver/getting_started/first_script/
+[driver.page_source](https://stackoverflow.com/questions/33359068/copy-out-results-after-submitting-web-form-using-selenium-python)
 
-https://selenium-python.readthedocs.io/locating-elements.html
+[scrape html table](https://medium.com/geekculture/web-scraping-tables-in-python-using-beautiful-soup-8bbc31c5803e)
 
-https://stackoverflow.com/questions/33359068/copy-out-results-after-submitting-web-form-using-selenium-python
+[list(header_dataframe)](https://stackoverflow.com/questions/19482970/get-a-list-from-pandas-dataframe-column-headers)
 
-https://medium.com/geekculture/web-scraping-tables-in-python-using-beautiful-soup-8bbc31c5803e
+[detect dataframe header](https://stackoverflow.com/questions/37206142/determine-the-header-in-a-csv-file-using-pandas-if-header-none)
