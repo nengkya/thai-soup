@@ -42,27 +42,30 @@ def test_eight_components():
 	df_pandas=pd.read_html(driver.page_source, attrs={'class':'table-bordered'},flavor='bs4')
 
 	####################
-	#data of csv file 
-	rows = df_pandas[1].values.tolist()
-	
-	#name of csv file
-	a_tab = SoupStrainer('li',{'class': 'active'})
+	#data of csv file
+	for table in range(0, len(df_pandas)):
+		rows = df_pandas[table].values.tolist()
 
-	soup1 = BeautifulSoup(driver.page_source, features = "html.parser", parseOnlyThese = a_tab)
-
-	a = soup1.find('a')
-
-	filename = str(a.string) + ".csv"
+		print(rows)
 		
-	#writing to csv file 
-	with open(filename, 'w') as csvfile: 
-		#creating a csv writer object 
-		csvwriter = csv.writer(csvfile) 
+		#name of csv file
+		a_tab = SoupStrainer('li',{'class': 'active'})
+
+		soup1 = BeautifulSoup(driver.page_source, features = "html.parser", parseOnlyThese = a_tab)
+
+		a = soup1.find('a')
+
+		filename = str(a.string) + " table " + str(table) + ".csv"
 			
-		#writing the data rows
-		for i in range(0, len(rows)):
-			csvwriter.writerow(rows[i])
-	##############
+		#writing to csv file 
+		with open(filename, 'w') as csvfile: 
+			#creating a csv writer object 
+			csvwriter = csv.writer(csvfile) 
+				
+			#writing the data rows
+			for i in range(0, len(rows)):
+				csvwriter.writerow(rows[i])
+		##############
 
 	driver.quit()
 
