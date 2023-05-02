@@ -11,12 +11,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 #extract form submit result
 from bs4 import BeautifulSoup, SoupStrainer
-#from BeautifulSoup import BeautifulSoup, SoupStrainer
-import re
 
 import pandas as pd
 import csv
-import requests
 
 
 def test_eight_components():
@@ -45,19 +42,17 @@ def test_eight_components():
 	df_pandas=pd.read_html(driver.page_source, attrs={'class':'table-bordered'},flavor='bs4')
 
 	####################
-	#data rows of csv file 
+	#data of csv file 
 	rows = df_pandas[1].values.tolist()
 	
 	#name of csv file
+	a_tab = SoupStrainer('li',{'class': 'active'})
 
-	product = SoupStrainer('li',{'class': 'active'})
-	soup1 = BeautifulSoup(driver.page_source, features = "html.parser", parseOnlyThese = product)
+	soup1 = BeautifulSoup(driver.page_source, features = "html.parser", parseOnlyThese = a_tab)
 
-	#for a in soup1.findAll('a',{'title':re.compile('.+') }):
-	for a in soup1.findAll('a'):
-		  print(a.string)
+	a = soup1.find('a')
 
-	filename = "by_country.csv"
+	filename = str(a.string) + ".csv"
 		
 	#writing to csv file 
 	with open(filename, 'w') as csvfile: 
@@ -65,7 +60,7 @@ def test_eight_components():
 		csvwriter = csv.writer(csvfile) 
 			
 		#writing the data rows
-		for i in range(0, 4):
+		for i in range(0, len(rows)):
 			csvwriter.writerow(rows[i])
 	##############
 
