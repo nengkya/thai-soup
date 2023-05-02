@@ -43,7 +43,7 @@ def test_eight_components():
 
 	####################
 	#data of csv file
-	for table in range(0, len(df_pandas)):
+	for table in range(1, len(df_pandas)):
 		rows = df_pandas[table].values.tolist()
 
 		print(rows)
