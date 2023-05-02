@@ -10,11 +10,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 #extract form submit result
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
+#from BeautifulSoup import BeautifulSoup, SoupStrainer
+import re
 
-import urllib.request
 import pandas as pd
 import csv
+import requests
 
 
 def test_eight_components():
@@ -40,47 +42,32 @@ def test_eight_components():
 
 	soup = BeautifulSoup(driver.page_source, features = "html.parser")
 
-	with open(hs_code + ".html", "w") as file:
-		file.write(str(soup))
-
-	#pd.set_option('display.max_colwidth', 30)	
-	#pd.set_option('display.max_column', None)	
-
 	df_pandas=pd.read_html(driver.page_source, attrs={'class':'table-bordered'},flavor='bs4')
 
 	####################
-	#field names 
-	fields = ['Name', 'Branch', 'Year', 'CGPA'] 
-		
 	#data rows of csv file 
 	rows = df_pandas[1].values.tolist()
 	
 	#name of csv file
 
-	'''
-	for	mylist in soup.find_all("li", {"class": "active"}):
-		for a in soup.find_all('a', href=True):
-			print("Found the URL:", a['href'])
-	'''
+	product = SoupStrainer('li',{'class': 'active'})
+	soup1 = BeautifulSoup(driver.page_source, features = "html.parser", parseOnlyThese = product)
 
-	filename = "university_records.csv"
+	#for a in soup1.findAll('a',{'title':re.compile('.+') }):
+	for a in soup1.findAll('a'):
+		  print(a.string)
+
+	filename = "by_country.csv"
 		
 	#writing to csv file 
 	with open(filename, 'w') as csvfile: 
 		#creating a csv writer object 
 		csvwriter = csv.writer(csvfile) 
 			
-		#writing the fields 
-		csvwriter.writerow(fields) 
-			
 		#writing the data rows
-		for i in range(0, 3):
+		for i in range(0, 4):
 			csvwriter.writerow(rows[i])
 	##############
-
-	for i in range(0, 3):
-		print(type(rows[i]))
-		print(rows[i])
 
 	driver.quit()
 
